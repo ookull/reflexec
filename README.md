@@ -52,7 +52,7 @@ specified file event (e.g. file change).
   :          |Register event| >---------------------ˊ          :
   :          ˋ--------------ˊ                                  :
   :                  |                                         :
-  :                  | Keyboargd interrupt ^C                  :
+  :                  | Keyboard interrupt ^C                   :
   :                  |                                         :
   :                  V                                         :
   :                  O                                         :
