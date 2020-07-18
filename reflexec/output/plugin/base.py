@@ -49,8 +49,8 @@ MSG_DELAY = "Pause {delay} seconds"
 MSG_START_WATCH = "Starting watcher for filesystem patterns"
 #: Standard message for file change event
 MSG_FILE_CHANGED = "Changed file: {filename}"
-#: Standard message to instruct user sending QUIT signal using keyboard
-MSG_SEND_QUIT_SIGNAL = "Send QUIT signal (press ^\\) to force execution"
+#: Standard message to instruct user how to run command
+MSG_SEND_QUIT_SIGNAL = "Press 'R' to run command"
 #: Standard message for event processing
 MSG_PROCESSING_EVENT = "Processing event: {event}"
 

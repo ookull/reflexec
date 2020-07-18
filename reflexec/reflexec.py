@@ -3,14 +3,17 @@
 """
 
 import logging
+import queue
 import subprocess
 import sys
+import threading
 
 from . import EXIT_CODE_KBD_INTERRUPT, EXIT_CODE_SIGQUIT, config, signal_handler
 from .cli import process_cli_args
 from .output import OUTPUT_PLUGINS
 from .output.plugin.chained import ChainedOutputPlugin
-from .watcher import get_watcher_plugin
+from .watcher import get_watcher_plugin, watch_fs
+from .watcher.kbd_watcher import watch_kbd
 
 log = logging.getLogger("reflexec")
 
@@ -30,6 +33,7 @@ class Reflexec:
     watcher = None  #: Watcher plugin (object)
     returncode = None  #: Reflexec return code (int)
     changed_file = None  #: Name of changed file from watcher (str)
+    key = None  #: Registered character from keyboard (char)
 
     def __init__(self, cli_cfg):
         self.cfg_mgr = config.ConfigManager(cli_cfg)
@@ -133,22 +137,56 @@ class Reflexec:
 
         # watch
         self.changed_file = None
-        log.debug("Starting watcher")
+        self.key = None
+        log.debug("Starting watchers")
+
+        event = threading.Event()
+        event_queue = queue.Queue()
+
+        log.debug("Creating keyboard watcher thread")
+        kbd_watcher_thread = threading.Thread(
+            target=watch_kbd,
+            args=[event, event_queue],
+            daemon=True,
+        )
+        kbd_watcher_thread.start()
+
+        log.debug("Creating file system watcher thread")
+        fs_watcher_thread = threading.Thread(
+            target=watch_fs,
+            args=[event, event_queue, self.watcher],
+            daemon=True,
+        )
+        fs_watcher_thread.start()
+
         try:
-            self.watcher.watch()
-            log.debug("Watcher finished")
+            log.debug("Waiting for threads")
+            event.wait()
+        except KeyboardInterrupt:
+            log.info("Keyboard interrupt")
         except signal_handler.SigQuitException as err:
             self.changed_file = ""
             self.output.handle_watch_event(err)
-        except StopIteration as err:
-            event, self.changed_file = str(err.value).split(":", 1)
-            log.debug("Detected event %s for file %s", event, self.changed_file)
         finally:
-            # stop notifier
-            self.watcher.stop()
+            event.set()
+            try:
+                event_name, event_value = event_queue.get_nowait()
+                log.debug(
+                    "Registered watch event %s with value %r", event_name, event_value
+                )
+            except queue.Empty:
+                event_name, event_value = None, None
+
+            if event_name == "KEYBOARD":
+                self.key = event_value
+            elif event_name:
+                self.changed_file = event_value
+            log.debug("Joining threads")
+            kbd_watcher_thread.join(timeout=0.2)
+            fs_watcher_thread.join(timeout=0)
 
         # report result
-        self.output.finish_watch(self.changed_file)
+        self.output.finish_watch(self.changed_file, self.key)
 
     def loop(self):
         """Main loop."""
@@ -188,7 +226,12 @@ class Reflexec:
 
             # start watcher
             self.watch()
-            if self.changed_file is None:  # keyboard interrupt ^C
+            if self.key == "Q":  # quit
+                self.returncode = 0
+                raise StopIteration()
+            elif self.key == "R":  # run
+                pass
+            elif self.changed_file is None:  # keyboard interrupt ^C
                 self.returncode = EXIT_CODE_KBD_INTERRUPT
                 raise StopIteration()
 

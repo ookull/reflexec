@@ -6,7 +6,7 @@ import logging
 
 from .plugin import __builtin_plugins__
 
-log = logging.getLogger("reflexec")
+log = logging.getLogger("fs_watcher")
 
 # register builtin watcher plugins
 WATCHER_PLUGINS = dict(
@@ -48,3 +48,17 @@ def get_watcher_plugin(plugin_name, **kw):
         return plugin_class(**kw)
 
     return None
+
+
+def watch_fs(event, pipeline, watcher):
+    """File system watcher.
+
+    Wait for watcher and register file system event.
+    """
+    log.debug("Starting file system watcher '%r'", watcher)
+    try:
+        watcher.watch()
+    except StopIteration as err:
+        pipeline.put(err.value.split(":", maxsplit=1))
+        event.set()
+    log.debug("Shutting down file system watcher")

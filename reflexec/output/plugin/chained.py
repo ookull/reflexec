@@ -142,11 +142,13 @@ class ChainedOutputPlugin(OutputPlugin):
             plugin.set_msg_params(event=event)
             self.handle_plugin_event(plugin, "handle_watch_event", [event])
 
-    def finish_watch(self, changed_file):
+    def finish_watch(self, changed_file, key):
         """Handle filesystem watch finish event."""
         self.watch_data.changed_file = changed_file
-        if changed_file is None:
+        if key == "Q":
             self.watch_data.error_msg = "Keyboard interrupt"
+        elif key == "R":
+            self.watch_data.error_msg = "Run command"
         elif changed_file == "":
             self.watch_data.error_msg = "Got QUIT signal"
         else:
