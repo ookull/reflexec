@@ -30,9 +30,7 @@ setup(
     author="Ivar Smolin",
     author_email="okul@linux.ee",
     url="https://github.com/ookull/reflexec",
-    download_url="https://github.com/ookull/reflexec/archive/v{}.tar.gz".format(
-        __version__
-    ),
+    download_url=f"https://github.com/ookull/reflexec/archive/v{__version__}.tar.gz",
     license="MIT",
     install_requires=["pyinotify"],
     packages=find_packages(exclude=("tests", "docs")),

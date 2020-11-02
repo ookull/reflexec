@@ -58,7 +58,7 @@ class TerminalTitleOutputPlugin(OutputPlugin):
 
         if kw.pop("debug", False):
             if self.cfg.get("debug"):
-                print("DEBUG[{}]: ".format(self.name), *args, **kw, flush=True)
+                print(f"DEBUG[{self.name}]: ", *args, **kw, flush=True)
             return
 
         print(ansi.set_title(" ".join(args)), end="", flush=True)

@@ -12,15 +12,13 @@ def validate_config_value(key, cfg):
     """Validate config value."""
     if key not in cfg:
         return
-    validator_fn = globals()["validate_{}".format(key)]
+    validator_fn = globals()[f"validate_{key}"]
     value = cfg[key]
     try:
         value = validator_fn(value)
     except ValueError as err:
         del cfg[key]
-        raise ValueError(
-            'Invalid value "{}" for parameter "{}": {}'.format(value, key, err)
-        )
+        raise ValueError(f"Invalid value {value!r} for parameter {key!r}: {err}")
     if value is None:
         del cfg[key]
     else:

@@ -116,9 +116,7 @@ class ColorTerminalOutputPlugin(OutputPlugin):
             "cr": "\015",
         }
         # make ASCII characters available using codes (e.g. \007 for BEL)
-        self._fmt_args.update(
-            [["\\{:03d}".format(code), chr(code)] for code in range(0, 256)]
-        )
+        self._fmt_args.update([[f"\\{code:03d}", chr(code)] for code in range(0, 256)])
         super().__init__(cmd_name, cfg)
 
     def set_msg_params(self, **kw):

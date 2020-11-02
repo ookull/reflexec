@@ -20,21 +20,21 @@ def human_readable_timedelta(duration):
     # format duration string
     msg = []
     if duration["days"]:
-        msg.append("{:d} days".format(duration["days"]))
+        msg.append(f"{duration['days']:d} days")
     if msg or duration["hours"]:
-        msg.append("{:d} hr".format(duration["hours"]))
+        msg.append(f"{duration['hours']:d} hr")
     if msg or duration["minutes"]:
-        msg.append("{:d} min".format(duration["minutes"]))
+        msg.append(f"{duration['minutes']:d} min")
     # output seconds only if duration is shorter than one hour
     if not duration["days"] and not duration["hours"]:
         if duration["minutes"] or duration["seconds"] >= 30:
-            msg.append("{} sec".format(duration["seconds"]))
+            msg.append(f"{duration['seconds']} sec")
         elif duration["seconds"] >= 10:
-            msg.append("{:.1f} sec".format(duration["seconds"]))
+            msg.append(f"{duration['seconds']:.1f} sec")
         elif duration["seconds"] >= 1:
-            msg.append("{:.2f} sec".format(duration["seconds"]))
+            msg.append(f"{duration['seconds']:.2f} sec")
         else:
-            msg.append("{:.3f} sec".format(duration["seconds"]))
+            msg.append(f"{duration['seconds']:.3f} sec")
     return str(" ".join(msg))
 
 

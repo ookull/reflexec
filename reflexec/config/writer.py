@@ -82,20 +82,16 @@ def write_config_file(args, config_values):
                     else:
                         val = str(default_value)
                 val = val.replace("\n", "\n  ")
-                cfg_file.write("{} = {}\n\n".format(key, val))
+                cfg_file.write(f"{key} = {val}\n\n")
                 if key == "command":
                     assert val != "reflexec", sys.argv
     except FileExistsError:
         raise OSError(
-            "Error while creating config file {}: file already exists".format(
-                config_filename
-            )
+            f"Error while creating config file {config_filename}: file already exists"
         )
     except OSError as err:
         raise OSError(
-            "Error while writing config file {}: {}".format(
-                config_filename, err.strerror
-            )
+            f"Error while writing config file {config_filename}: {err.strerror}"
         )
 
     log.info("Config file is successfully created")

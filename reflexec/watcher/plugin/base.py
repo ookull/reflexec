@@ -33,7 +33,7 @@ class WatcherPlugin:
         self._cfg.update(cfg)
 
     def __repr__(self):
-        return "{0.name} watcher plugin".format(self)
+        return f"{self.name} watcher plugin"
 
     def watch(self):
         """Watch file system."""

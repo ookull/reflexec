@@ -27,9 +27,9 @@ class InotifyHandler(pyinotify.ProcessEvent):
         if event.path.startswith(("/", "./")):
             path = event.path
         else:
-            path = "./{}".format(event.path)
+            path = f"./{event.path}"
 
-        raise StopIteration("{0}:{1}".format(event.maskname, path))
+        raise StopIteration(f"{event.maskname}:{path}")
 
 
 class InotifyWatcherPlugin(WatcherPlugin):

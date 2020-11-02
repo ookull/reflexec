@@ -59,7 +59,7 @@ class Reflexec:
         self.output.add_plugins(self.cfg["output"], OUTPUT_PLUGINS)
 
         # initialize watcher plugin
-        watcher_cfg_section = "watcher-{}".format(self.cfg["watcher"])
+        watcher_cfg_section = f"watcher-{self.cfg['watcher']}"
         watcher_cfg = cfg["watcher"].get(watcher_cfg_section, {})
         try:
             self.watcher = get_watcher_plugin(
@@ -107,7 +107,7 @@ class Reflexec:
                 returncode = -1
             else:
                 exec_msg = (
-                    "Command finished with error code {}".format(returncode)
+                    f"Command finished with error code {returncode}"
                     if returncode
                     else "Command finished successfully"
                 )
@@ -170,9 +170,8 @@ class Reflexec:
                     and self.output.exec_data.count >= self.cfg["max_execs"]
                 ):
                     self.output.output(
-                        "Reached maximum execution count ({}), exiting".format(
-                            self.cfg["max_execs"]
-                        )
+                        "Reached maximum execution count "
+                        f"({self.cfg['max_execs']}), exiting"
                     )
                     self.returncode = 1 if returncode else 0
                     raise StopIteration()
@@ -216,7 +215,7 @@ def main():
     )
     log.debug(
         "CLI args: %s",
-        " ".join(["{}={}".format(*arg) for arg in sorted(cli_cfg.items())]),
+        " ".join([f"{key}={val}" for key, val in sorted(cli_cfg.items())]),
     )
 
     signal_handler.set_quit_signal_handler()

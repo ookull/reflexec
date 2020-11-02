@@ -17,22 +17,22 @@ BEL = "\007"
 
 def set_title(title):
     """Set terminal title."""
-    return "{OSC}2;{title}{BEL}".format(OSC=OSC, title=title, BEL=BEL)
+    return f"{OSC}2;{title}{BEL}"
 
 
 def clear_screen(mode=2):
     """Clear screen."""
-    return "{CSI}0;0H{CSI}{mode}J".format(CSI=CSI, mode=mode)
+    return f"{CSI}0;0H{CSI}{mode}J"
 
 
 def clear_line(mode=2):
     """Clear current line."""
-    return "{CSI}{mode}K".format(CSI=CSI, mode=mode)
+    return f"{CSI}{mode}K"
 
 
 def code_to_chars(code):
     """Convert code to ANSI escape sequence."""
-    return "{CSI}{code}m".format(CSI=CSI, code=code)
+    return f"{CSI}{code}m"
 
 
 # pylint: disable=too-few-public-methods
