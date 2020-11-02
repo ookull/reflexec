@@ -63,13 +63,15 @@ class WatchPatternCollection:
     def solve_command_patterns(self):
         """Generate list of filepaths from command patterns."""
         for command in self.patterns:
-            log.debug('Executing command "%s" to get file list', command)
+            log.debug('Executing command "%s" to generate watch paths', command)
             proc = subprocess.run(
                 shlex.split(command), stdout=subprocess.PIPE, check=False
             )
             if proc.returncode:
                 log.warning(
-                    'Watch pattern command "%s" exited with error code', proc.returncode
+                    'Watch paths generator command "%s" exited with error code %d',
+                    command,
+                    proc.returncode,
                 )
             for line_no, line in enumerate(proc.stdout.split(b"\n"), start=1):
                 try:
