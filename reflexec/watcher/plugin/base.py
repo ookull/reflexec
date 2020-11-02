@@ -53,7 +53,7 @@ def convert_patterns_to_paths(patterns):
     paths = []
     for pattern in patterns:
         for path in pattern.paths:
-            if path.startswith("-"):  # exclude
+            if path.startswith("!"):  # exclude
                 if path[1:] in paths:
                     paths.remove(path[1:])
             else:  # include

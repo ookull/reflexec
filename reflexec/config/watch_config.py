@@ -52,13 +52,13 @@ class WatchPatternCollection:
         """Generate list of filepaths from unix shell patterns."""
         for pattern in self.patterns[:]:
             log.debug('Solving shell pattern "%s"', pattern)
-            exclude = pattern.startswith("-")
+            exclude = pattern.startswith("!")
             if exclude:
                 pattern = pattern[1:]
             if not pattern.startswith(("/", "./")):
                 pattern = "./{}".format(pattern)
             for path in glob.iglob(pattern, recursive=True):
-                yield "-{}".format(path) if exclude else path
+                yield "!{}".format(path) if exclude else path
 
     def solve_command_patterns(self):
         """Execute command(s) to generate list of watch paths."""
