@@ -38,7 +38,14 @@ class WatchPatternCollection:
             paths = self.solve_shell_patterns()
         else:
             assert self.pattern_type == "command"
-            paths = self.solve_command_patterns()
+            if self.patterns == ["*"]:
+                log.warning(
+                    "No command defined to generate list of watch paths, "
+                    "using default pattern '*'"
+                )
+                paths = self.solve_shell_patterns()
+            else:
+                paths = self.solve_command_patterns()
         return list(filter(None, paths))
 
     def solve_shell_patterns(self):
