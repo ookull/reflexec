@@ -61,7 +61,7 @@ class WatchPatternCollection:
                 yield "-{}".format(path) if exclude else path
 
     def solve_command_patterns(self):
-        """Generate list of filepaths from command patterns."""
+        """Execute command(s) to generate list of watch paths."""
         for command in self.patterns:
             log.debug('Executing command "%s" to generate watch paths', command)
             proc = subprocess.run(
