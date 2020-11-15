@@ -112,7 +112,11 @@ def parse_cli_args():
         action="store_true",
         help="output list of output plugins and exit",
     )
-    parser.add_argument("--debug", action="store_true", help="set debug mode")
+    parser.add_argument(
+        "--log-level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Set logging level",
+    )
     parser.add_argument(
         "--version", action="version", version=f"%(prog)s {__version__}"
     )
@@ -124,8 +128,8 @@ def parse_cli_args():
     return {
         "command": tuple([args.command] + args.arg) if args.command else tuple(),
         "config_file": args.config_file,
-        "debug": args.debug,
         "delay": args.delay,
+        "log_level": args.log_level,
         "max_execs": args.max_execs,
         "name": args.name,
         "output": tuple(args.output),
@@ -148,8 +152,6 @@ def process_cli_args():
     args = parse_cli_args()
 
     # delete empty args
-    if not args["debug"]:
-        del args["debug"]
     for arg_name in list(args.keys()):
         if args[arg_name] in [None, tuple()]:
             del args[arg_name]

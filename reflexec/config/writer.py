@@ -41,9 +41,7 @@ def write_config_file(args, config_values):
     """
     # create logger
     logging.basicConfig(
-        format="{levelname}: {message}",
-        style="{",
-        level="DEBUG" if args.get("debug") else "INFO",
+        format="{levelname}: {message}", style="{", level=args.get("log_level")
     )
 
     # create filename

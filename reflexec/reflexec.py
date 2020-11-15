@@ -50,11 +50,11 @@ class Reflexec:
         self.cfg = cfg["main"]
 
         # change log level if debugging is set in config file but not in CLI
-        log.setLevel(logging.DEBUG if self.cfg.get("debug") else logging.INFO)
+        log.setLevel(self.cfg.get("log_level", "INFO"))
 
         # initialize output plugins
-        if "debug" in cfg["main"]:
-            cfg["output"]["debug"] = cfg["main"]["debug"]
+        if cfg["main"].get("log_level", "INFO").upper() == "DEBUG":
+            cfg["output"]["debug"] = True
         self.output = ChainedOutputPlugin(cmd_name=self.cfg["name"], cfg=cfg["output"])
         self.output.add_plugins(self.cfg["output"], OUTPUT_PLUGINS)
 
@@ -211,7 +211,7 @@ def main():
     logging.basicConfig(
         format="{levelname}: {message}",
         style="{",
-        level="DEBUG" if cli_cfg.get("debug") else "INFO",
+        level=cli_cfg.get("log_level", "INFO"),
     )
     log.debug(
         "CLI args: %s",

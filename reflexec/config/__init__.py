@@ -25,7 +25,7 @@ DEFAULT_CONFIG = [
     ["command", None],
 ]
 #: Known config parameters
-KNOWN_CONFIG_KEYS = [_[0] for _ in DEFAULT_CONFIG] + ["debug"]
+KNOWN_CONFIG_KEYS = [_[0] for _ in DEFAULT_CONFIG] + ["log_level"]
 #: Main secion name in config file
 CONFIG_SECTION = "reflexec"
 

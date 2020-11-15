@@ -3,7 +3,6 @@
 
 import logging
 import shlex
-from distutils.util import strtobool
 
 log = logging.getLogger("reflexec")
 
@@ -25,11 +24,12 @@ def validate_config_value(key, cfg):
         cfg[key] = value
 
 
-def validate_debug(value):
-    """Validate "debug" parameter."""
-    if isinstance(value, str):
-        value = strtobool(value)
-    return bool(value)
+def validate_log_level(value):
+    """Validate "log_level" parameter."""
+    assert isinstance(value, str)
+    if value not in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]:
+        raise ValueError("Must be DEBUG, INFO, WARNING, ERROR or CRITICAL")
+    return value
 
 
 def validate_command(value):

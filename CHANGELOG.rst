@@ -17,6 +17,10 @@ Changed
 
 - Use "!" for watch pattern exclusion
 
+- CLI argument ``--debug`` replaced with ``--log-level``
+
+- Config parameter ``debug`` replaced with ``log_level``
+
 Removed
 -------
 
