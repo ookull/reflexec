@@ -56,9 +56,7 @@ def parse_cli_args():
     )
     parser.add_argument("command", nargs="?", help="command to execute")
     parser.add_argument("arg", nargs="*", help="arguments for command")
-    parser.add_argument(
-        "-n", "--name", help="command display name (Default: command)",
-    )
+    parser.add_argument("-n", "--name", help="command display name (Default: command)")
     parser.add_argument(
         "-w",
         "--watch",

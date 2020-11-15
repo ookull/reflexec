@@ -13,15 +13,21 @@ log = logging.getLogger("reflexec")
 
 #: Config parameter descriptions for main section
 CONFIG_VALUE_DESCRIPTION = {
-    "command": "Command to execute. {changed_file} will replaced with filename or "
-    "empty string if no file change detected (e.g. on first execution).",
+    "command": (
+        "Command to execute. {changed_file} will replaced with filename or "
+        "empty string if no file change detected (e.g. on first execution)."
+    ),
     "delay": "Delay after command execution (float).",
-    "max_execs": "Maximum count of command execution (integer). "
-    "Reflexec will automatically stop when this count is reached.",
+    "max_execs": (
+        "Maximum count of command execution (integer). "
+        "Reflexec will automatically stop when this count is reached."
+    ),
     "name": "Configuration name.",
     "output": "Comma separated list of output plugins.",
-    "start": "The first action to do after reflexec start. "
-    '"watch" to watch files or "exec" to execute command.',
+    "start": (
+        "The first action to do after reflexec start. "
+        '"watch" to watch files or "exec" to execute command.'
+    ),
     "type": "Watch pattern type.",
     "watch": "Watch patterns. One pattern per line.",
     "watcher": "Watcher plugin name.",
