@@ -49,7 +49,7 @@ def write_config_file(args, config_values):
     # create filename
     if not args.get("config_file"):
         log.info(
-            "Config file name is not specified, using default name %s",
+            "Config file name is not specified, using default name %r",
             DEFAULT_CONFIG_FILENAME,
         )
     config_filename = args.get("config_file", DEFAULT_CONFIG_FILENAME)
@@ -87,11 +87,11 @@ def write_config_file(args, config_values):
                     assert val != "reflexec", sys.argv
     except FileExistsError:
         raise OSError(
-            f"Error while creating config file {config_filename}: file already exists"
+            f"Error while creating config file {config_filename!r}: file already exists"
         )
     except OSError as err:
         raise OSError(
-            f"Error while writing config file {config_filename}: {err.strerror}"
+            f"Error while writing config file {config_filename!r}: {err.strerror}"
         )
 
     log.info("Config file is successfully created")

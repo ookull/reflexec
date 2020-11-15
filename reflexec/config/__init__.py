@@ -86,7 +86,7 @@ class ConfigManager:
         if cfg["main"]["watch"] or cfg.get("max_execs") == 0:
             for filepath in self._cfg_files:
                 if os.path.exists(filepath):
-                    log.debug("Adding config file %s to watch patterns", filepath)
+                    log.debug("Adding config file %r to watch patterns", filepath)
                     cfg["main"]["watch"].append(
                         WatchPatternCollection(patterns=[filepath])
                     )
@@ -112,7 +112,7 @@ class ConfigManager:
         for filepath, timestamp in self._cfg_timestamps.items():
             try:
                 if timestamp and os.stat(filepath).st_mtime != timestamp:
-                    log.info("Detected config file change (%s)", filepath)
+                    log.info("Detected config file change (%r)", filepath)
                     return True
             except OSError:
                 pass
@@ -128,19 +128,19 @@ def load_cfg_files(cfg_files):
         cfg_timestamps[filepath] = None
         actual_filepath = os.path.expanduser(filepath)
         if not os.path.exists(actual_filepath):
-            log.debug("Config file %s does not exist", filepath)
+            log.debug("Config file %r does not exist", filepath)
             continue
 
         # read config from file
-        log.debug('Reading config file "%s"', filepath)
+        log.debug('Reading config file %r', filepath)
         try:
             config_parser = get_config_parser(actual_filepath)
         except OSError as err:
-            log.error("Error while reading config file %s: %s", filepath, err.strerror)
+            log.error("Error while reading config file %r: %s", filepath, err.strerror)
         except configparser.Error as err:
-            log.error("Error while reading config file %s: %s", filepath, err)
+            log.error("Error while reading config file %r: %s", filepath, err)
         except UnicodeDecodeError as err:
-            log.error("Error while decoding config file %s: %s", filepath, err)
+            log.error("Error while decoding config file %r: %s", filepath, err)
         else:
             cfg["main"][filepath] = read_config_file_main_section(
                 config_parser, filepath
@@ -160,7 +160,7 @@ def load_cfg_files(cfg_files):
         try:
             cfg_timestamps[filepath] = os.stat(actual_filepath).st_mtime
         except OSError as err:
-            log.debug("Error while reading stat for config file %s: %s", filepath, err)
+            log.debug("Error while reading stat for config file %r: %s", filepath, err)
 
     return cfg, cfg_timestamps
 
@@ -174,7 +174,7 @@ def load_config_section(section_name, cfg, filepath, config_parser):
         cfg[section_type][plugin_name].update(config_parser[section_name])
     except configparser.Error as err:
         log.error(
-            "Error while parsing section [%s] in config file %s: %s",
+            "Error while parsing section [%s] in config file %r: %s",
             section_name,
             filepath,
             err,
@@ -226,20 +226,20 @@ def read_config_file_main_section(config_parser, filepath):
     cfg = {}
 
     if CONFIG_SECTION not in config_parser:
-        log.error("Config file %s does not have section [%s]", filepath, CONFIG_SECTION)
+        log.error("Config file %r does not have section [%s]", filepath, CONFIG_SECTION)
         return cfg
 
     log.debug("Parsing section [%s]", CONFIG_SECTION)
     for key in config_parser[CONFIG_SECTION].keys():
         if key not in KNOWN_CONFIG_KEYS:
-            log.error('Unknown config key "%s" in section [%s]', key, CONFIG_SECTION)
+            log.error('Unknown config key %r in section [%s]', key, CONFIG_SECTION)
             continue
 
         cfg[key] = config_parser.get(CONFIG_SECTION, key)
         try:
             validate_config_value(key, cfg)
         except ValueError as err:
-            log.error("Error while parsing config file %s: %s", filepath, err)
+            log.error("Error while parsing config file %r: %s", filepath, err)
             continue
 
         quoted_value = (

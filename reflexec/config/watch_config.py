@@ -64,13 +64,13 @@ class WatchPatternCollection:
     def solve_command_patterns(self):
         """Execute command(s) to generate list of watch paths."""
         for command in self.patterns:
-            log.debug('Executing command "%s" to generate watch paths', command)
+            log.debug("Executing command %r to generate watch paths", command)
             proc = subprocess.run(
                 shlex.split(command), stdout=subprocess.PIPE, check=False
             )
             if proc.returncode:
                 log.warning(
-                    'Watch paths generator command "%s" exited with error code %d',
+                    "Watch paths generator command %r exited with error code %d",
                     command,
                     proc.returncode,
                 )

@@ -142,7 +142,7 @@ class Reflexec:
             self.output.handle_watch_event(err)
         except StopIteration as err:
             event, self.changed_file = str(err.value).split(":", 1)
-            log.debug("Detected event %s for file %s", event, self.changed_file)
+            log.debug("Detected event %s for file %r", event, self.changed_file)
         finally:
             # stop notifier
             self.watcher.stop()

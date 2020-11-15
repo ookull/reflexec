@@ -35,7 +35,7 @@ class ChainedOutputPlugin(OutputPlugin):
         """Add plugins to chain."""
         for plugin_name in plugins:
             if ":" in plugin_name:
-                log.debug('Initializing external output plugin "%s"', plugin_name)
+                log.debug("Initializing external output plugin %r", plugin_name)
                 module_name, class_name = plugin_name.split(":")
                 try:
                     module = importlib.import_module(module_name)
@@ -44,7 +44,7 @@ class ChainedOutputPlugin(OutputPlugin):
                     continue
                 plugin_class = getattr(module, class_name)
             else:
-                log.debug('Initializing built-in output plugin "%s"', plugin_name)
+                log.debug("Initializing built-in output plugin %r", plugin_name)
                 try:
                     plugin_class = builtin_plugins[plugin_name]
                 except KeyError:
@@ -71,15 +71,14 @@ class ChainedOutputPlugin(OutputPlugin):
             event(*params)
         except KeyError as err:
             log.error(
-                "Invalid key %s while formatting '%s' "
-                "message for output plugin '%s'",
+                "Invalid key %s while formatting %r message for output plugin %r",
                 err,
                 event_name,
                 plugin.name,
             )
         except Exception as err:  # pylint: disable=broad-except
             log.error(
-                "%s while formatting '%s' message for output plugin '%s'",
+                "%s while formatting %r message for output plugin %r",
                 err,
                 event_name,
                 plugin.name,

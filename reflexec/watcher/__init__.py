@@ -23,7 +23,7 @@ def get_watcher_plugin(plugin_name, **kw):
     """
     plugin_class = None
     if ":" in plugin_name:
-        log.debug('Initializing external watcher plugin "%s"', plugin_name)
+        log.debug("Initializing external watcher plugin %r", plugin_name)
         module_name, class_name = plugin_name.split(":")
         try:
             module = importlib.import_module(module_name)
@@ -32,12 +32,12 @@ def get_watcher_plugin(plugin_name, **kw):
             log.error("Error while loading external watcher plugin: %s", err)
             raise SystemExit(1)
     else:
-        log.debug('Initializing built-in watcher plugin "%s"', plugin_name)
+        log.debug("Initializing built-in watcher plugin %r", plugin_name)
         try:
             plugin_class = WATCHER_PLUGINS[plugin_name]
         except KeyError:
             log.error(
-                'Specified built-in watcher plugin "%s" does not exist', plugin_name
+                "Specified built-in watcher plugin %r does not exist", plugin_name
             )
             log.info(
                 "Execute reflexec with --list-plugins option to display plugin list"

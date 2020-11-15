@@ -143,7 +143,7 @@ class ColorTerminalOutputPlugin(OutputPlugin):
             self.output(msg.format(**self._msg_params, **fmt_params), **kw)
         except AttributeError as err:
             log.error(
-                "Error while formatting '%s' message for output plugin '%s': %s ",
+                "Error while formatting %r message for output plugin %r: %s ",
                 event,
                 self.name,
                 err,

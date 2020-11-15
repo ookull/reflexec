@@ -43,7 +43,7 @@ class CommandOutputPlugin(OutputPlugin):
                 subprocess.run(shlex.split(cmd), check=True)
             except OSError as err:
                 log.error(
-                    'Error while executing command for event "%s": %s',
+                    'Error while executing command for event %r: %s',
                     event,
                     err.strerror,
                 )

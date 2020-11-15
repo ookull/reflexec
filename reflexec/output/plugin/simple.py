@@ -72,7 +72,7 @@ class DefaultOutputPlugin(OutputPlugin):
             except Exception:
                 pass
 
-        log.debug('Using output plugin "%s"', plugin_class.name)
+        log.debug('Using output plugin %r', plugin_class.name)
         self.plugin = plugin_class(cmd_name=cmd_name, cfg=cfg)
 
         super().__init__(cmd_name, cfg)
