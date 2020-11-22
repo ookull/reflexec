@@ -72,7 +72,7 @@ class Reflexec:
             log.error(
                 "Cannot load watcher plugin, exiting with error code %d", err.code
             )
-            sys.exit(err.code)
+            raise
 
     def exec_cmd(self):
         """Execute command.
